@@ -65,7 +65,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'multi3/target/surefire-reports/*.war'
+                    junit 'multi3/target/surefire-reports/multi3-3.7-SNAPSHOT'
                 }
             }
         }        
