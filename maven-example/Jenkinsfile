@@ -1,0 +1,46 @@
+node {
+    def server = Artifactory.newServer url: jfrog, credentialsId: jfrog
+    def rtMaven = Artifactory.newMavenBuild()
+    def buildInfo
+
+    stage ('Clone') {
+        git url: 'https://github.com/kohbah/project-examples.git'
+    }
+    stage("build & SonarQube analysis") {
+        node {
+            withSonarQubeEnv('sonar') {
+               sh 'mvn clean package sonar:sonar'
+              }
+          }
+      }
+    stage("Quality Gate"){
+        timeout(time: 1, unit: 'HOURS') {
+            def qg = waitForQualityGate()
+            if (qg.status != 'OK') {
+                error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              }
+          }
+      }
+    stage ('Artifactory configuration') {
+        rtMaven.tool = jfrog // Tool name from Jenkins configuration
+        rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server
+        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+        buildInfo = Artifactory.newBuildInfo()
+    }
+
+    stage ('Test') {
+        rtMaven.run pom: 'maven-example/pom.xml', goals: 'clean test'
+    }
+        
+    stage ('Install') {
+        rtMaven.run pom: 'maven-example/pom.xml', goals: 'install', buildInfo: buildInfo
+    }
+ 
+    stage ('Deploy') {
+        rtMaven.deployer.deployArtifacts buildInfo
+    }
+        
+    stage ('Publish build info') {
+        server.publishBuildInfo buildInfo
+    }
+}
