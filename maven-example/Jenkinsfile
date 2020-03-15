@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage ('Clone') {
             steps {
-                git branch: 'master', url: "https://github.com/kohbah/project-examples.git"
+                git url: "https://github.com/kohbah/project-examples.git"
             }
         }
         stage("build & SonarQube analysis") {
