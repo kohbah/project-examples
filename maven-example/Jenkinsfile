@@ -15,7 +15,8 @@ pipeline {
                 rtServer (
                     id: "jfrog",
                     url: jfrog,
-                    credentialsId: jfrog
+                    username: 'deploy'
+                    password: '4rfv$RFV'
                 )
 
                 rtMavenDeployer (
