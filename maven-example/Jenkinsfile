@@ -15,7 +15,7 @@ pipeline {
                 rtServer (
                     id: "jfrog",
                     url: jfrog,
-                    username: 'deploy'
+                    username: 'deploy',
                     password: '4rfv$RFV'
                 )
 
