@@ -55,14 +55,19 @@ pipeline {
                     pom: 'maven-example/pom.xml',
                     goals: 'clean install',
                     deployerId: "MAVEN_DEPLOYER",
-                    resolverId: "MAVEN_RESOLVER"
+                    resolverId: "MAVEN_RESOLVER"  
                   )
                }
             }
         stage('Test') {
             steps {
-                sh 'mvn -f maven-example/pom.xml test'
+                sh 'mvn test'
             }
-        }        
+            post {
+                always {
+                    junit 'multi3/target/surefire-reports/TEST-artifactory.test.AppTest.xml'
+                }
+            }
+        }       
       }
 }
