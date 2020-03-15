@@ -63,11 +63,6 @@ pipeline {
             steps {
                 sh 'mvn -f maven-example/pom.xml test'
             }
-            post {
-                always {
-                    junit 'multi3/target/surefire-reports/multi3-3.7-SNAPSHOT'
-                }
-            }
         }        
       }
 }
