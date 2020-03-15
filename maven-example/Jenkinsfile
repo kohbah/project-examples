@@ -65,7 +65,7 @@ pipeline {
             }
             post {
                 always {
-                    junit 'multi3/target/surefire-reports/TEST-artifactory.test.AppTest.xml'
+                    junit 'maven-example/multi3/target/surefire-reports/*.xml'
                 }
             }
         }       
