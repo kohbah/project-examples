@@ -31,7 +31,6 @@ pipeline {
                     username: 'deploy',
                     password: '4rfv$RFV'
                 )
-
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "jfrog",
@@ -47,7 +46,6 @@ pipeline {
                 )
             }
         }
-
         stage ('Exec Maven') {
             steps {
                 rtMavenRun (
@@ -58,6 +56,6 @@ pipeline {
                     resolverId: "MAVEN_RESOLVER"
                   )
                }
-           }
-      }
+          }
+     }
 }
