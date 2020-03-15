@@ -23,6 +23,7 @@ pipeline {
                waitForQualityGate abortPipeline: true
               }
             }
+         }  
         stage ('Artifactory configuration') {
             steps {
                 rtServer (
